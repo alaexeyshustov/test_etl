@@ -27,5 +27,6 @@ In case of scaling (launching 10 instances of app) the queue is shared.
 docker-compose up --build -d
 
 tail -f log/netcat.log
+
 siege -c 100 -t 30s -i -v -f urls.txt
 
