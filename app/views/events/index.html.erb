@@ -1,0 +1,10 @@
+<h1>Events form</h1>
+
+<%= alert %>
+<%= notice %>
+
+<%= form_tag(create_event_path, method: 'post') do %>
+  <%= label_tag(:event, 'Event name: ') %>
+  <%= text_field_tag(:event) %>
+  <%= submit_tag('Submit') %>
+<% end %>

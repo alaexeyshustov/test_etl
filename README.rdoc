@@ -1,0 +1,31 @@
+== Test app
+
+Test rails app, contains RoR, Redis, Sidekiq
+
+== Description
+
+It's a simple stack that accepts POST requests to an endpoint
+containing “event” string and pushes that through to an external service.
+The main idean of app is data batching, external service gets the data in chunks rather
+than individual pings (ETL)
+
+The server gathers batches of events of at most 10 items;
+if 10 times not arrive within a minute, the service sends what is has in the queue right away
+
+
+== External service
+
+netcat listens 0.0.0.0 8085
+
+== Realization
+
+The whole project is docker-compose file.
+The app is a vroker/consumer pattern realization.
+In case of scaling (launching 10 instances of app) the queue is shared.
+
+== Start and Test
+docker-compose up --build -d
+
+tail -f log/netcat.log
+siege -c 100 -t 30s -i -v -f urls.txt
+
