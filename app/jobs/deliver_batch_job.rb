@@ -7,7 +7,7 @@ class DeliverBatchJob < ActiveJob::Base
 
     elsif messages.is_a?(String)
       queue = messages.constantize.new
-      messages = queue.clear_queue(true)
+      messages = queue.clear_queue
 
       NetcatChannel.deliver(messages)
     end

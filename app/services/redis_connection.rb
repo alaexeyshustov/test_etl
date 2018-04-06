@@ -43,6 +43,30 @@ module RedisConnection
       end
     end
 
+    def redis_transaction(key, before_transaction, &block)
+      result = nil
+
+      50.times do
+        result = redis.watch(key) do
+          val = before_transaction.call(redis)
+
+          redis.multi do |multi|
+            block.yield(multi, val)
+          end
+        end
+
+        break if result
+      end
+
+      raise 'Redis transaction timeout' unless result
+
+      result
+    end
+
+    def run_lua(script, *args)
+      redis.eval(script, {argv: args})
+    end
+
 
   end
 
